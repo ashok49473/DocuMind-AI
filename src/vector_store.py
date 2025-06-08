@@ -12,14 +12,14 @@ class VectorStoreManager:
         self.embeddings = OpenAIEmbeddings(openai_api_key=Config.OPENAI_API_KEY)
         self.index_name = Config.PINECONE_INDEX_NAME
         self.vector_store = None
+        self.pc = None
         self._initialize_pinecone()
     
     def _initialize_pinecone(self):
         """Initialize Pinecone client"""
         try:
-            pinecone.init(
-                api_key=Config.PINECONE_API_KEY,
-                environment=Config.PINECONE_ENVIRONMENT
+            self.pc = pinecone.Pinecone(
+                api_key=Config.PINECONE_API_KEY
             )
             st.success("🌲 Connected to Pinecone")
         except Exception as e:
@@ -29,11 +29,11 @@ class VectorStoreManager:
     def create_index_if_not_exists(self):
         """Create Pinecone index if it doesn't exist"""
         try:
-            existing_indexes = pinecone.list_indexes()
+            existing_indexes = self.pc.list_indexes().names()
             
             if self.index_name not in existing_indexes:
                 st.info(f"Creating new index: {self.index_name}")
-                pinecone.create_index(
+                self.pc.create_index(
                     name=self.index_name,
                     dimension=1536,  # OpenAI embedding dimension
                     metric='cosine'
@@ -99,7 +99,7 @@ class VectorStoreManager:
     def delete_index(self):
         """Delete the Pinecone index"""
         try:
-            pinecone.delete_index(self.index_name)
+            self.pc.delete_index(self.index_name)
             st.success(f"🗑️ Deleted index: {self.index_name}")
         except Exception as e:
             st.error(f"❌ Error deleting index: {str(e)}")
