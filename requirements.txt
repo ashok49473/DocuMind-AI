@@ -1,7 +1,8 @@
-streamlit
-langchain
-langchain-openai
-langchain-pinecone
-pinecone-client
-pypdf2
-python-dotenv
+streamlit==1.45.1
+langchain==0.3.25
+langchain-openai==0.3.21
+langchain-pinecone==0.2.8
+pinecone-client==6.0.0
+pypdf2==3.0.1
+python-dotenv==1.1.0
+openai==1.84.0

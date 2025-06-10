@@ -3,9 +3,9 @@
 ### *Transform Your PDFs into Conversational Knowledge*
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red.svg)](https://streamlit.io)
-[![LangChain](https://img.shields.io/badge/LangChain-Latest-green.svg)](https://langchain.com)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--3.5--Turbo-orange.svg)](https://openai.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.45.1-red.svg)](https://streamlit.io)
+[![LangChain](https://img.shields.io/badge/LangChain-0.3.25-green.svg)](https://langchain.com)
+[![OpenAI](https://img.shields.io/badge/OpenAI-1.84.0-orange.svg)](https://openai.com)
 [![Pinecone](https://img.shields.io/badge/Pinecone-v6.0.0-purple.svg)](https://pinecone.io)
 
 ---
