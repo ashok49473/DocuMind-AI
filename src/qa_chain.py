@@ -2,7 +2,7 @@ from typing import Dict, Any
 from langchain_openai import ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from config import Config
+from src.config import Config
 import streamlit as st
 
 class QAChain:
@@ -11,7 +11,7 @@ class QAChain:
     def __init__(self, vector_store_manager):
         self.vector_store_manager = vector_store_manager
         self.llm = ChatOpenAI(
-            openai_api_key=Config.OPENAI_API_KEY,
+            api_key=Config.OPENAI_API_KEY,
             model_name=Config.LLM_MODEL,
             temperature=0.1
         )
@@ -65,7 +65,7 @@ class QAChain:
             }
         
         try:
-            result = self.qa_chain({"query": question})
+            result = self.qa_chain.invoke({"query": question})
             
             return {
                 "answer": result["result"],

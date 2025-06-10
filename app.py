@@ -1,9 +1,17 @@
 import streamlit as st
-from config import Config
-from pdf_processor import PDFProcessor
-from vector_store import VectorStoreManager
-from qa_chain import QAChain
+from src.config import Config
+from src.pdf_processor import PDFProcessor
+from src.vector_store import VectorStoreManager
+from src.qa_chain import QAChain
 import time
+
+
+st.set_page_config(
+    page_title="DocuMind AI",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 class DocuMindAI:
     """Main application class for DocuMind AI"""
@@ -65,17 +73,9 @@ class DocuMindAI:
     
     def run(self):
         """Run the Streamlit application"""
-        st.set_page_config(
-            page_title="DocuMind AI",
-            page_icon="🤖",
-            layout="wide",
-            initial_sidebar_state="expanded"
-        )
-        
         # Header
-        st.title("🤖 DocuMind AI")
-        st.markdown("### Intelligent PDF Question-Answering System")
-        st.markdown("Upload a PDF document and ask questions about its content!")
+        st.title("DocuMind AI 🧠📚")
+        st.markdown("### Transform Your PDFs into Conversational Knowledge")
         
         # Sidebar
         with st.sidebar:
@@ -126,6 +126,9 @@ class DocuMindAI:
                 else:
                     with st.spinner("Thinking..."):
                         result = self.qa_chain.ask_question(question)
+                        
+                        # Store the question in session state
+                        st.session_state.recent_questions.append(question)
                         
                         # Display answer
                         st.subheader("🎯 Answer")

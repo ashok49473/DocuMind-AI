@@ -3,7 +3,7 @@ from pinecone import Pinecone, ServerlessSpec
 from langchain_pinecone import PineconeVectorStore
 from langchain_openai import OpenAIEmbeddings
 from langchain.schema import Document
-from config import Config
+from src.config import Config
 import streamlit as st
 import time
 
@@ -11,8 +11,9 @@ class VectorStoreManager:
     """Manages vector store operations with Pinecone v6.0.0"""
     
     def __init__(self):
+        print(Config.OPENAI_API_KEY)
         self.embeddings = OpenAIEmbeddings(
-            openai_api_key=Config.OPENAI_API_KEY,
+            api_key=Config.OPENAI_API_KEY,
             model=Config.EMBEDDING_MODEL
         )
         self.pc = None
@@ -57,7 +58,6 @@ class VectorStoreManager:
                 text_key="text"
             )
             
-            st.success("✅ Pinecone initialized successfully")
             
         except Exception as e:
             st.error(f"Error initializing Pinecone: {str(e)}")
