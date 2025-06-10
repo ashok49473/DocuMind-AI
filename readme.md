@@ -175,6 +175,7 @@ PINECONE_REGION = "us-east-1"  # Region
 - Environment variable validation
 
 ---
+![documind](https://github.com/user-attachments/assets/ba061e38-d056-46fa-9001-26c402e5f401)
 
 ## 🔍 How It Works
 
