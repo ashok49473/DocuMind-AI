@@ -1,105 +1,122 @@
-import pinecone
-from langchain.vectorstores import Pinecone
-from langchain.embeddings import OpenAIEmbeddings
+from typing import List, Optional
+from pinecone import Pinecone, ServerlessSpec
+from langchain_pinecone import PineconeVectorStore
+from langchain_openai import OpenAIEmbeddings
 from langchain.schema import Document
-from typing import List
-from src.config import Config
+from config import Config
 import streamlit as st
 import time
 
 class VectorStoreManager:
+    """Manages vector store operations with Pinecone v6.0.0"""
+    
     def __init__(self):
-        self.embeddings = OpenAIEmbeddings(openai_api_key=Config.OPENAI_API_KEY)
-        self.index_name = Config.PINECONE_INDEX_NAME
-        self.vector_store = None
+        self.embeddings = OpenAIEmbeddings(
+            openai_api_key=Config.OPENAI_API_KEY,
+            model=Config.EMBEDDING_MODEL
+        )
         self.pc = None
+        self.index = None
+        self.vector_store = None
         self._initialize_pinecone()
     
     def _initialize_pinecone(self):
-        """Initialize Pinecone client"""
+        """Initialize Pinecone client and index using v6.0.0 API"""
         try:
-            self.pc = pinecone.Pinecone(
-                api_key=Config.PINECONE_API_KEY
-            )
-            st.success("🌲 Connected to Pinecone")
-        except Exception as e:
-            st.error(f"❌ Failed to connect to Pinecone: {str(e)}")
-            raise e
-    
-    def create_index_if_not_exists(self):
-        """Create Pinecone index if it doesn't exist"""
-        try:
-            existing_indexes = self.pc.list_indexes().names()
+            # Initialize Pinecone client
+            self.pc = Pinecone(api_key=Config.PINECONE_API_KEY)
             
-            if self.index_name not in existing_indexes:
-                st.info(f"Creating new index: {self.index_name}")
-                self.pc.create_index(
-                    name=self.index_name,
-                    dimension=1536,  # OpenAI embedding dimension
-                    metric='cosine'
-                )
-                # Wait for index to be ready
-                time.sleep(10)
-                st.success(f"✅ Created index: {self.index_name}")
-            else:
-                st.info(f"📋 Using existing index: {self.index_name}")
+            # Check if index exists, create if it doesn't
+            existing_indexes = [index.name for index in self.pc.list_indexes()]
+            
+            if Config.PINECONE_INDEX_NAME not in existing_indexes:
+                st.info(f"Creating new Pinecone index: {Config.PINECONE_INDEX_NAME}")
                 
+                # Create index with serverless specification
+                self.pc.create_index(
+                    name=Config.PINECONE_INDEX_NAME,
+                    dimension=Config.PINECONE_DIMENSION,
+                    metric=Config.PINECONE_METRIC,
+                    spec=ServerlessSpec(
+                        cloud=Config.PINECONE_CLOUD,
+                        region=Config.PINECONE_REGION
+                    )
+                )
+                
+                # Wait for index to be ready
+                st.info("Waiting for index to be ready...")
+                time.sleep(10)  # Give time for index initialization
+            
+            # Get index instance
+            self.index = self.pc.Index(Config.PINECONE_INDEX_NAME)
+            
+            # Initialize LangChain PineconeVectorStore
+            self.vector_store = PineconeVectorStore(
+                index=self.index,
+                embedding=self.embeddings,
+                text_key="text"
+            )
+            
+            st.success("✅ Pinecone initialized successfully")
+            
         except Exception as e:
-            st.error(f"❌ Error with index creation: {str(e)}")
-            raise e
+            st.error(f"Error initializing Pinecone: {str(e)}")
+            self.vector_store = None
     
-    def add_documents(self, documents: List[Document]):
-        """Add documents to Pinecone vector store"""
-        if not documents:
-            st.warning("No documents to add to vector store")
-            return
+    def add_documents(self, documents: List[Document]) -> bool:
+        """Add documents to vector store"""
+        if not self.vector_store or not documents:
+            return False
         
         try:
-            self.create_index_if_not_exists()
+            # Add documents to the vector store
+            self.vector_store.add_documents(documents)
             
-            st.info("🔄 Adding documents to vector store...")
+            # Wait a moment for indexing to complete
+            time.sleep(2)
             
-            # Create vector store and add documents
-            self.vector_store = Pinecone.from_documents(
-                documents=documents,
-                embedding=self.embeddings,
-                index_name=self.index_name
-            )
-            
-            st.success(f"✅ Added {len(documents)} documents to vector store")
-            
+            return True
         except Exception as e:
-            st.error(f"❌ Error adding documents to vector store: {str(e)}")
-            raise e
+            st.error(f"Error adding documents to vector store: {str(e)}")
+            return False
     
-    def get_retriever(self, k: int = Config.TOP_K):
-        """Get retriever for similarity search"""
-        if not self.vector_store:
-            # Connect to existing vector store
-            self.vector_store = Pinecone.from_existing_index(
-                index_name=self.index_name,
-                embedding=self.embeddings
-            )
-        
-        return self.vector_store.as_retriever(
-            search_type="similarity",
-            search_kwargs={"k": k}
-        )
-    
-    def similarity_search(self, query: str, k: int = Config.TOP_K):
+    def similarity_search(self, query: str, k: int = 4) -> List[Document]:
         """Perform similarity search"""
         if not self.vector_store:
-            self.vector_store = Pinecone.from_existing_index(
-                index_name=self.index_name,
-                embedding=self.embeddings
-            )
+            return []
         
-        return self.vector_store.similarity_search(query, k=k)
-    
-    def delete_index(self):
-        """Delete the Pinecone index"""
         try:
-            self.pc.delete_index(self.index_name)
-            st.success(f"🗑️ Deleted index: {self.index_name}")
+            return self.vector_store.similarity_search(query, k=k)
         except Exception as e:
-            st.error(f"❌ Error deleting index: {str(e)}")
+            st.error(f"Error performing similarity search: {str(e)}")
+            return []
+    
+    def clear_index(self) -> bool:
+        """Clear all vectors from the index"""
+        try:
+            if self.index:
+                # Get index stats to check if there are vectors
+                stats = self.index.describe_index_stats()
+                total_vectors = stats.get('total_vector_count', 0)
+                
+                if total_vectors > 0:
+                    # Delete all vectors from all namespaces
+                    self.index.delete(delete_all=True)
+                    st.success(f"Cleared {total_vectors} vectors from index")
+                else:
+                    st.info("Index is already empty")
+                
+                return True
+        except Exception as e:
+            st.error(f"Error clearing index: {str(e)}")
+            return False
+    
+    def get_index_stats(self) -> dict:
+        """Get index statistics"""
+        try:
+            if self.index:
+                return self.index.describe_index_stats()
+            return {}
+        except Exception as e:
+            st.error(f"Error getting index stats: {str(e)}")
+            return {}
