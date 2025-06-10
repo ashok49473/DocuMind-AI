@@ -24,6 +24,8 @@
 - 🔄 **Modular Architecture**: Clean, maintainable code structure for easy customization
 - 📈 **Index Management**: Real-time vector count display and index clearing capabilities
 
+![Screenshot 2025-06-10 215601](https://github.com/user-attachments/assets/ce2cd947-e9e5-4da6-8d18-cc5ba0ad8ca3)
+
 ---
 
 ## 🛠️ Technology Stack
