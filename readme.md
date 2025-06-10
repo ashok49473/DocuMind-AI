@@ -12,12 +12,12 @@
 
 ## 🚀 Overview
 
-**DocuMind AI** is an intelligent PDF question-answering system that leverages **Retrieval-Augmented Generation (RAG)** to help users extract insights from PDF documents through natural language conversations. Built with cutting-edge AI technologies, it transforms static documents into an interactive knowledge base with real-time document processing and intelligent responses.
+**DocuMind AI** is an intelligent PDF question-answering system that leverages **Retrieval-Augmented Generation (RAG)** to help users extract insights from PDF documents through natural language conversations. It transforms static documents into an interactive knowledge base with real-time document processing and intelligent responses.
 
 ### ✨ Key Features
 
 - 📄 **Dynamic PDF Upload**: Real-time PDF processing with drag-and-drop interface
-- 🧠 **Semantic Search**: Vector-based similarity search using OpenAI embeddings
+- 🧠 **Semantic Search**: Vector-based similarity search using OpenAI embeddings and Pinecone
 - 🤖 **AI-Powered Q&A**: Natural language responses powered by GPT-3.5-Turbo
 - 📊 **Source Attribution**: Transparent citations showing which document sections informed each answer
 - 💬 **Interactive Interface**: Modern Streamlit web interface with real-time status monitoring
@@ -109,11 +109,13 @@
 
 ```
 DocuMind-AI/
-├── 📄 app.py                    # Main Streamlit application
-├── 📄 config.py                 # Configuration management
-├── 📄 pdf_processor.py          # PDF processing and chunking
-├── 📄 vector_store.py           # Pinecone v6.0.0 integration
-├── 📄 qa_chain.py               # RAG implementation
+|──src/
+   |
+   ├── 📄 app.py                    # Main Streamlit application
+   ├── 📄 config.py                 # Configuration management
+   ├── 📄 pdf_processor.py          # PDF processing and chunking
+   ├── 📄 vector_store.py           # Pinecone v6.0.0 integration
+   ├── 📄 qa_chain.py               # RAG implementation
 ├── 📄 requirements.txt          # Python dependencies
 ├── 📄 .env.example             # Environment variables template
 └── 📄 README.md                # This documentation
@@ -171,20 +173,6 @@ PINECONE_REGION = "us-east-1"  # Region
 #### **Config**
 - Centralized configuration management
 - Environment variable validation
-- Model and parameter settings
-- Pinecone v6.0.0 specifications
-
----
-
-## 🆕 Pinecone v6.0.0 Features
-
-This version leverages the latest Pinecone client with:
-
-- **Serverless Architecture**: Automatic scaling and cost optimization
-- **Improved Performance**: Faster indexing and query responses
-- **Enhanced API**: Simplified client initialization and management
-- **Better Error Handling**: More robust connection and retry logic
-- **Real-time Statistics**: Live vector count and index monitoring
 
 ---
 
@@ -200,13 +188,6 @@ This version leverages the latest Pinecone client with:
 
 ---
 
-## 📊 Performance & Limitations
-
-### Strengths
-- Handles large PDF documents efficiently
-- Provides accurate, contextual responses
-- Maintains source attribution for transparency
-- Scales automatically with Pinecone serverless
 
 ### Considerations
 - Requires OpenAI and Pinecone API credits
@@ -214,35 +195,6 @@ This version leverages the latest Pinecone client with:
 - Accuracy depends on document quality and structure
 - Best results with well-structured, text-based PDFs
 
----
-
-## 🛡️ Error Handling
-
-The application includes comprehensive error handling for:
-
-- PDF processing failures
-- API connection issues
-- Vector store operations
-- Embedding generation errors
-- Question processing failures
-- Index management operations
-
----
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-- Follow the modular architecture pattern
-- Add comprehensive error handling
-- Include docstrings for all functions
-- Test with various PDF formats
-- Maintain code readability and documentation
 
 ---
 
@@ -276,9 +228,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [ ] Multi-document conversation support
 - [ ] Advanced filtering and search options
-- [ ] Document summarization features
 - [ ] Integration with cloud storage services
-- [ ] Mobile-responsive interface improvements
 - [ ] Batch document processing
 - [ ] Custom embedding model support
 
@@ -289,7 +239,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### ⭐ Star this project if you found it helpful!
 
 **Built with ❤️ using LangChain, OpenAI, and Pinecone**
-
-*Transform your documents into intelligent conversations*
 
 </div>
