@@ -3,37 +3,37 @@
 ### *Transform Your PDFs into Conversational Knowledge*
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.45.1-red.svg)](https://streamlit.io)
-[![LangChain](https://img.shields.io/badge/LangChain-0.3.25-green.svg)](https://langchain.com)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4-orange.svg)](https://openai.com)
-[![Pinecone](https://img.shields.io/badge/Pinecone-Vector%20DB-purple.svg)](https://pinecone.io)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Latest-red.svg)](https://streamlit.io)
+[![LangChain](https://img.shields.io/badge/LangChain-Latest-green.svg)](https://langchain.com)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--3.5--Turbo-orange.svg)](https://openai.com)
+[![Pinecone](https://img.shields.io/badge/Pinecone-v6.0.0-purple.svg)](https://pinecone.io)
 
 ---
 
 ## 🚀 Overview
 
-**DocuMind AI** is an intelligent document question-answering system that leverages **Retrieval-Augmented Generation (RAG)** to help users extract insights from PDF documents through natural language conversations. Built with cutting-edge AI technologies, it transforms static documents into an interactive knowledge base.
+**DocuMind AI** is an intelligent PDF question-answering system that leverages **Retrieval-Augmented Generation (RAG)** to help users extract insights from PDF documents through natural language conversations. Built with cutting-edge AI technologies, it transforms static documents into an interactive knowledge base with real-time document processing and intelligent responses.
 
 ### ✨ Key Features
 
-- 📄 **PDF Processing**: Automatic text extraction and intelligent chunking
+- 📄 **Dynamic PDF Upload**: Real-time PDF processing with drag-and-drop interface
 - 🧠 **Semantic Search**: Vector-based similarity search using OpenAI embeddings
-- 🤖 **AI-Powered Q&A**: Natural language responses powered by GPT-4
-- 📊 **Source Attribution**: Transparent citations showing which documents informed each answer
-- 💬 **Chat Interface**: Intuitive Streamlit web interface with conversation history
-- 🔄 **Real-time Processing**: Dynamic document ingestion and querying
+- 🤖 **AI-Powered Q&A**: Natural language responses powered by GPT-3.5-Turbo
+- 📊 **Source Attribution**: Transparent citations showing which document sections informed each answer
+- 💬 **Interactive Interface**: Modern Streamlit web interface with real-time status monitoring
+- 🔄 **Modular Architecture**: Clean, maintainable code structure for easy customization
+- 📈 **Index Management**: Real-time vector count display and index clearing capabilities
 
 ---
-
 
 ## 🛠️ Technology Stack
 
 | Component | Technology | Purpose |
 |-----------|------------|---------|
 | **Framework** | LangChain | AI application orchestration |
-| **LLM** | OpenAI GPT-4 | Natural language generation |
-| **Vector DB** | Pinecone | Scalable similarity search |
-| **Embeddings** | OpenAI Ada-002 | Text vectorization |
+| **LLM** | OpenAI GPT-3.5-Turbo | Natural language generation |
+| **Vector DB** | Pinecone v6.0.0 | Scalable serverless similarity search |
+| **Embeddings** | OpenAI text-embedding-ada-002 | Text vectorization |
 | **Frontend** | Streamlit | Interactive web interface |
 | **Document Processing** | PyPDF2 | PDF text extraction |
 
@@ -43,7 +43,7 @@
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.9+
 - OpenAI API key
 - Pinecone account and API key
 
@@ -51,8 +51,8 @@
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/documind-ai.git
-   cd documind-ai
+   git clone https://github.com/ashok49473/DocuMind-AI.git
+   cd DocuMind-AI
    ```
 
 2. **Install dependencies**
@@ -68,21 +68,15 @@
    # Add your API keys to .env
    OPENAI_API_KEY=sk-your-openai-key-here
    PINECONE_API_KEY=your-pinecone-api-key
-   PINECONE_ENVIRONMENT=your-pinecone-environment
+   PINECONE_INDEX_NAME=documind-ai
    ```
 
-4. **Add your PDF documents**
-   ```bash
-   mkdir data
-   # Copy your PDF files to the data/ folder
-   ```
-
-5. **Run the application**
+4. **Run the application**
    ```bash
    streamlit run app.py
    ```
 
-6. **Open your browser**
+5. **Open your browser**
    ```
    Navigate to: http://localhost:8501
    ```
@@ -91,40 +85,38 @@
 
 ## 📋 Usage Guide
 
-### Step 1: Document Processing
-1. Place your PDF files in the `data/` folder
-2. Open the Streamlit interface
-3. Click **"🔄 Process Documents"** in the sidebar
-4. Wait for processing to complete
+### Step 1: Upload PDF Document
+1. Open the Streamlit interface
+2. Use the sidebar file uploader to select a PDF
+3. Click **"Process PDF"** to analyze the document
+4. Wait for processing confirmation
 
 ### Step 2: Ask Questions
-1. Enter your question in the main interface
-2. Click **"🔍 Get Answer"**
-3. Review the AI-generated response
-4. Check the **Sources** section for document references
+1. Enter your question in the main interface text input
+2. Click **"Ask Question"**
+3. Review the AI-generated response with source citations
+4. Expand **"Source Documents"** to see referenced text sections
 
-### Step 3: Explore Features
-- View **Chat History** for previous conversations
-- Use **Advanced Options** to manage the vector store
-- Clear data or reset the system as needed
+### Step 3: Manage Your Knowledge Base
+- Monitor system status in the right panel
+- View real-time vector count statistics
+- Clear the vector store to reset the system
+- Process new documents to update the knowledge base
 
 ---
 
 ## 📁 Project Structure
 
 ```
-documind-ai/
-├── 📁 data/                    # PDF documents folder
-├── 📁 src/                     # Core application modules
-│   ├── 📄 __init__.py
-│   ├── 📄 config.py           # Configuration management
-│   ├── 📄 document_processor.py # PDF processing and chunking
-│   ├── 📄 vector_store.py     # Pinecone integration
-│   └── 📄 rag_chain.py        # RAG implementation
-├── 📄 app.py                  # Main Streamlit application
-├── 📄 requirements.txt        # Python dependencies
-├── 📄 .env.example           # Environment variables template
-└── 📄 README.md              # This file
+DocuMind-AI/
+├── 📄 app.py                    # Main Streamlit application
+├── 📄 config.py                 # Configuration management
+├── 📄 pdf_processor.py          # PDF processing and chunking
+├── 📄 vector_store.py           # Pinecone v6.0.0 integration
+├── 📄 qa_chain.py               # RAG implementation
+├── 📄 requirements.txt          # Python dependencies
+├── 📄 .env.example             # Environment variables template
+└── 📄 README.md                # This documentation
 ```
 
 ---
@@ -135,21 +127,122 @@ documind-ai/
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `OPENAI_API_KEY` | OpenAI API key for GPT-4 and embeddings | ✅ |
+| `OPENAI_API_KEY` | OpenAI API key for GPT-3.5-Turbo and embeddings | ✅ |
 | `PINECONE_API_KEY` | Pinecone API key for vector storage | ✅ |
-| `PINECONE_ENVIRONMENT` | Pinecone environment (e.g., us-west1-gcp) | ✅ |
-| `PINECONE_INDEX_NAME` | Name for your Pinecone index | ❌ (default: pdf-rag-index) |
+| `PINECONE_INDEX_NAME` | Name for your Pinecone index | ❌ (default: documind-ai) |
 
 ### Customizable Parameters
 
 ```python
-# In src/config.py
-CHUNK_SIZE = 1000          # Document chunk size
-CHUNK_OVERLAP = 200        # Overlap between chunks
-MODEL_NAME = "gpt-3.5-turbo" # OpenAI model
-TEMPERATURE = 0.7          # Response creativity
-TOP_K = 4                  # Number of retrieved documents
+# In config.py
+CHUNK_SIZE = 1000              # Document chunk size
+CHUNK_OVERLAP = 200            # Overlap between chunks
+LLM_MODEL = "gpt-3.5-turbo"    # OpenAI model
+EMBEDDING_MODEL = "text-embedding-ada-002"  # Embedding model
+PINECONE_DIMENSION = 1536      # Embedding dimension
+PINECONE_METRIC = "cosine"     # Similarity metric
+PINECONE_CLOUD = "aws"         # Cloud provider
+PINECONE_REGION = "us-east-1"  # Region
 ```
+
+---
+
+## 🔧 Modular Architecture
+
+### Core Components
+
+#### **PDFProcessor**
+- Extracts text from uploaded PDF files
+- Splits text into manageable chunks with overlap
+- Creates LangChain Document objects with metadata
+
+#### **VectorStoreManager**
+- Manages Pinecone serverless index operations
+- Handles document embedding and storage
+- Performs similarity searches with configurable parameters
+- Provides index statistics and management
+
+#### **QAChain**
+- Implements retrieval-augmented generation
+- Uses custom prompts for context-aware responses
+- Returns answers with source document attribution
+- Handles error cases gracefully
+
+#### **Config**
+- Centralized configuration management
+- Environment variable validation
+- Model and parameter settings
+- Pinecone v6.0.0 specifications
+
+---
+
+## 🆕 Pinecone v6.0.0 Features
+
+This version leverages the latest Pinecone client with:
+
+- **Serverless Architecture**: Automatic scaling and cost optimization
+- **Improved Performance**: Faster indexing and query responses
+- **Enhanced API**: Simplified client initialization and management
+- **Better Error Handling**: More robust connection and retry logic
+- **Real-time Statistics**: Live vector count and index monitoring
+
+---
+
+## 🔍 How It Works
+
+1. **Document Ingestion**: PDF text is extracted and split into semantic chunks
+2. **Embedding Generation**: OpenAI creates vector representations of text chunks
+3. **Vector Storage**: Embeddings are stored in Pinecone serverless index
+4. **Query Processing**: User questions are embedded and matched against stored vectors
+5. **Context Retrieval**: Most relevant document chunks are retrieved
+6. **Answer Generation**: GPT-3.5-Turbo generates responses using retrieved context
+7. **Source Attribution**: Original document sections are provided for transparency
+
+---
+
+## 📊 Performance & Limitations
+
+### Strengths
+- Handles large PDF documents efficiently
+- Provides accurate, contextual responses
+- Maintains source attribution for transparency
+- Scales automatically with Pinecone serverless
+
+### Considerations
+- Requires OpenAI and Pinecone API credits
+- Processing time depends on document size
+- Accuracy depends on document quality and structure
+- Best results with well-structured, text-based PDFs
+
+---
+
+## 🛡️ Error Handling
+
+The application includes comprehensive error handling for:
+
+- PDF processing failures
+- API connection issues
+- Vector store operations
+- Embedding generation errors
+- Question processing failures
+- Index management operations
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+- Follow the modular architecture pattern
+- Add comprehensive error handling
+- Include docstrings for all functions
+- Test with various PDF formats
+- Maintain code readability and documentation
 
 ---
 
@@ -161,20 +254,33 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **LangChain** team for the incredible framework
-- **OpenAI** for powerful language models
-- **Pinecone** for scalable vector search
+- **LangChain** team for the incredible RAG framework
+- **OpenAI** for powerful language models and embeddings
+- **Pinecone** for scalable serverless vector search
 - **Streamlit** for the intuitive web framework
+- **PyPDF2** for reliable PDF processing
 
 ---
 
 ## 📞 Contact
 
-**Ashok Kumar** - [ashokpalivela123.@gmail.com](mailto:ashokpalivela123.@gmail.com)
+**Ashok Kumar** - [ashokpalivela123@gmail.com](mailto:ashokpalivela123@gmail.com)
 
 **Project Link**: [https://github.com/ashok49473/DocuMind-AI](https://github.com/ashok49473/DocuMind-AI)
 
-**Live Demo**: [https://documind-ai.streamlit.app](https://documind-ai.streamlit.app)
+**Portfolio**: [https://ashok49473.github.io](https://ashok49473.github.io)
+
+---
+
+## 🚀 Future Enhancements
+
+- [ ] Multi-document conversation support
+- [ ] Advanced filtering and search options
+- [ ] Document summarization features
+- [ ] Integration with cloud storage services
+- [ ] Mobile-responsive interface improvements
+- [ ] Batch document processing
+- [ ] Custom embedding model support
 
 ---
 
@@ -182,6 +288,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### ⭐ Star this project if you found it helpful!
 
-**Built with ❤️ using LangChain, OpenAI, and Streamlit**
+**Built with ❤️ using LangChain, OpenAI, and Pinecone**
+
+*Transform your documents into intelligent conversations*
 
 </div>
