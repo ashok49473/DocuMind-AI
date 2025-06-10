@@ -11,7 +11,6 @@ class VectorStoreManager:
     """Manages vector store operations with Pinecone v6.0.0"""
     
     def __init__(self):
-        print(Config.OPENAI_API_KEY)
         self.embeddings = OpenAIEmbeddings(
             api_key=Config.OPENAI_API_KEY,
             model=Config.EMBEDDING_MODEL
